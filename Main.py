@@ -94,17 +94,28 @@ def images():  # Function to look if there are public images in a repository.
             with open(output_file, "w") as f:  # Send the output to a text file with the name of the repository.
                 try:
                     subprocess.run(aws_cli_cmd, check=True, stdout=f)
-                except FileNotFoundError:  # In case the user enters an incorrect profile or repository 
+                except FileNotFoundError:  # In case the user enters an incorrect profile or repository
                     pass
 
         # Inform the user
         print("Command output saved to ", output_file)
 
+def content():  # FUnction to list the contents of a bucket
+   profile_name = input("Which profile are you using?\n")
+   output_file = f"{profile_name}.txt"
+   # Open the output file in write mode
+   with open(output_file, "w") as f:
+       # Run the AWS CLI command with the user input profile and redirect the output to the file
+       subprocess.run(["aws", "s3", "--profile", profile_name, "ls"], stdout=f)
+       print("The information was sent to ",output_file)
+
 # Starting question to the user.
 user_input = " "
-while user_input!= '3':
-    user_input = input("\nPlease enter your option\n1) See bucket logs\n2) See ECR public images\n3) Exit\n")
+while user_input!= '4':
+    user_input = input("\nPlease enter your option\n1) See bucket logs\n2) See ECR public images\n3) List S3 contents\n4) Exit\n")
     if(user_input=='1'):
         logs()
     if(user_input=='2'):
         images()
+    if(user_input=='3'):
+        content()
